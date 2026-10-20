@@ -1,0 +1,9 @@
+# Build context is the repo root; the Dockerfile only needs pom.xml, spotbugs-exclude.xml and src/.
+.git
+.github
+target/
+tests/
+docs/
+node_modules/
+*.iml
+.idea/
