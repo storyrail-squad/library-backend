@@ -34,6 +34,11 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # The Java version is part of these image tags (3.9-eclipse-temurin-21, 21-jre-alpine), so
+      # Dependabot sees Java 21 -> 26 as a minor bump. Java upgrades are planned work. The tags are
+      # floating, so security patches still arrive on rebuild (plus `apk upgrade` and the Trivy gate).
+      - dependency-name: "maven"
+      - dependency-name: "eclipse-temurin"
     groups:
       docker-minor-patch:
         update-types: [minor, patch]
