@@ -1,6 +1,10 @@
 # Library Catalog – Books API (`library-backend`)
 
-Spring Boot 3.5 (3.5.16, Tomcat pinned to 10.1.60) / Java 21 REST API for the Library Catalog. This repo **owns the API contract**:
+Spring Boot 3.5 (3.5.16, Tomcat pinned to 10.1.60) / Java 21 REST API for the Library Catalog. The API acceptance tests (Cucumber + Java) live in their own repo,
+[library-api-tests](https://github.com/storyrail-squad/library-api-tests). This pipeline runs them twice: against the
+freshly built jar on every PR and push, and the `@qa` scenarios against the QA API after each deploy.
+
+This repo **owns the API contract**:
 [`docs/api/openapi.yaml`](docs/api/openapi.yaml). Change the contract here first; the frontend
 ([library-frontend](https://github.com/storyrail-squad/library-frontend)) keeps a pinned copy and its CI fails until it
 pulls the new version. Stories and bugs are tracked in [squad-backlog](https://github.com/storyrail-squad/squad-backlog)
@@ -10,9 +14,8 @@ and built by [StoryRail](https://github.com/storyrail-squad/storyrail).
 |---|---|
 | `src/` | The Spring Boot app and its unit tests |
 | `docs/api/openapi.yaml` | The API contract (single source of truth for this API and its clients) |
-| `tests/api/` | Playwright API tests against a running backend; its own `package.json` |
 | `Dockerfile`, `render.yaml`, `.trivyignore` | Container image, Render blueprint, documented CVE waivers |
-| `.github/workflows/ci-cd.yml` | `mvn verify` → API tests on the jar → Docker build + Trivy → push to GHCR → deploy to Render (QA) → smoke |
+| `.github/workflows/ci-cd.yml` | `mvn verify` → API acceptance tests on the jar → Docker build + Trivy → push to GHCR → deploy to Render (QA) → smoke → API acceptance on QA (`@qa`) |
 | `.github/workflows/security.yml` | CodeQL, dependency review, gitleaks, Semgrep, workflow lint, SonarCloud (optional) |
 
 ## Run

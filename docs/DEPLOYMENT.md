@@ -44,7 +44,9 @@ The job pushes with the built-in `GITHUB_TOKEN` (`packages: write`); no secret i
 
 `deploy-render` then calls the hook with `imgURL=ghcr.io/<owner>/library-backend/library-api@sha256:…` (the scanned image's
 digest), polls `$BACKEND_URL/actuator/health` until `UP` (up to 15 min, free instances
-pull and cold-start slowly), and smoke-tests `GET /api/books` → 200. Without the secret the job prints a notice and
+pull and cold-start slowly), and smoke-tests `GET /api/books` → 200. Then `qa-acceptance` runs the `@qa` Cucumber scenarios from
+[library-api-tests](https://github.com/storyrail-squad/library-api-tests) against `$BACKEND_URL`. Also set the variable
+`QA_API_URL` (same value) in library-api-tests, so pushes to its `main` re-run the QA scenarios. Without the secret the job prints a notice and
 does nothing. Without `BACKEND_URL` it triggers the deploy but skips verification.
 
 Note: the previous instance keeps answering `UP` while Render pulls and starts the new image, so the health poll mainly proves the service is
@@ -76,7 +78,7 @@ never overwrites it). The Dockerfile default is `http://localhost:5173`.
 | Name | Kind | Needed for | Required |
 |---|---|---|---|
 | `RENDER_DEPLOY_HOOK_URL` | secret | `deploy-render` | only to deploy to Render |
-| `BACKEND_URL` | variable | `deploy-render` health poll + smoke test | with the hook |
+| `BACKEND_URL` | variable | `deploy-render` health poll + smoke test, and the QA acceptance run | with the hook |
 | `SONAR_TOKEN` | secret | `sonarcloud` job | no |
 | `GITLEAKS_LICENSE` | secret | `gitleaks` job | only if the repo is owned by an organization |
 
