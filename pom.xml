@@ -28,7 +28,7 @@
     <jackson-bom.version>2.21.7</jackson-bom.version>
     <!-- log4j-api 2.24.3 (via log4j-to-slf4j): GHSA-qv9r-c865-cp47 (moderate), fixed in 2.25.5. -->
     <log4j2.version>2.25.5</log4j2.version>
-    <jacoco.version>0.8.15</jacoco.version>
+    <jacoco.version>0.8.16</jacoco.version>
     <spotbugs-maven-plugin.version>4.10.5.0</spotbugs-maven-plugin.version>
     <findsecbugs.version>1.14.0</findsecbugs.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
